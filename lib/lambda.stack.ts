@@ -1,10 +1,15 @@
-import * as apigw from '@aws-cdk/aws-apigateway';
-import * as lambda from '@aws-cdk/aws-lambda';
-import { CfnOutput, Construct, Stack, StackProps } from '@aws-cdk/core';
+import * as apigw from 'aws-cdk-lib/aws-apigateway';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import * as path from 'path';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 
 
-export class AwsCdkPipeliensStack extends Stack {
+/**
+ * A stack for our simple Lambda-powered web service
+ */
+export class LambdaStack extends Stack {
   /**
    * The URL of the API Gateway endpoint, for use in the integ tests
    */
@@ -14,10 +19,10 @@ export class AwsCdkPipeliensStack extends Stack {
     super(scope, id, props);
 
     // The Lambda function that contains the functionality
-    const handler = new lambda.Function(this, 'Lambda', {
+    const handler = new NodejsFunction(this, 'lambda-function', {
       runtime: lambda.Runtime.NODEJS_14_X,
-      handler: 'handler.handler',
-      code: lambda.Code.fromAsset(path.resolve(__dirname, 'lambda')),
+      handler: 'main',
+      entry: path.join(__dirname, `/../src/lambda.ts`),
     });
 
     // An API Gateway to make the Lambda web-accessible
