@@ -1,7 +1,8 @@
 import { SecretValue, Stack, StackProps } from 'aws-cdk-lib'
 import { CodePipeline, CodePipelineSource, ShellStep } from "aws-cdk-lib/pipelines";
 import { Construct } from 'constructs';
-
+import { DeploymentStage } from './stage';
+import { ManualApprovalStep } from 'aws-cdk-lib/pipelines';
 
 /**
  * The stack that defines the application pipeline
@@ -29,6 +30,15 @@ export class DeploymentPipelineStack extends Stack {
         });
 
         // This is where we add the application stages
-        // ...
+        pipeline.addStage(new DeploymentStage(this, 'staging', {
+            env: { account: '530260462866', region: 'us-west-1' }
+        }));
+
+        // This is where we add the application stages
+        const prodStage = pipeline.addStage(new DeploymentStage(this, 'prod', {
+            env: { account: '530260462866', region: 'us-west-2' }
+        }));
+
+        prodStage.addPost(new ManualApprovalStep('approval'));
     }
 }
