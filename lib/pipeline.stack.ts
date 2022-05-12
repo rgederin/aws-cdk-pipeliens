@@ -34,11 +34,11 @@ export class DeploymentPipelineStack extends Stack {
             env: { account: '530260462866', region: 'us-west-2' }
         }));
 
-        // This is where we add the application stages
-        const prodStage = pipeline.addStage(new DeploymentStage(this, 'prod', {
-            env: { account: '530260462866', region: 'us-west-2' }
-        }));
+        // // This is where we add the application stages
+        // const prodStage = pipeline.addStage(new DeploymentStage(this, 'prod', {
+        //     env: { account: '530260462866', region: 'us-west-2' }
+        // }));
 
-        prodStage.addPost(new ManualApprovalStep('approval'));
+        //  prodStage.addPost(new ManualApprovalStep('approval'));
     }
 }
