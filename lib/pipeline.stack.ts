@@ -31,7 +31,7 @@ export class DeploymentPipelineStack extends Stack {
 
         // This is where we add the application stages
         pipeline.addStage(new DeploymentStage(this, 'staging', {
-            env: { account: '530260462866', region: 'us-west-1' }
+            env: { account: '530260462866', region: 'us-west-2' }
         }));
 
         // This is where we add the application stages
